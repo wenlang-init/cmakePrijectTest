@@ -1,0 +1,8 @@
+{
+	"InstallScripts" : 
+	[
+		"/d/work/vscode/cmake/buildclang/cmake_install.cmake",
+		"/d/work/vscode/cmake/buildclang/log/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

@@ -1,0 +1,14 @@
+/d/work/vscode/cmake/buildclang/CMakeFiles/test.dir
+/d/work/vscode/cmake/buildclang/CMakeFiles/edit_cache.dir
+/d/work/vscode/cmake/buildclang/CMakeFiles/rebuild_cache.dir
+/d/work/vscode/cmake/buildclang/CMakeFiles/list_install_components.dir
+/d/work/vscode/cmake/buildclang/CMakeFiles/install.dir
+/d/work/vscode/cmake/buildclang/CMakeFiles/install/local.dir
+/d/work/vscode/cmake/buildclang/CMakeFiles/install/strip.dir
+/d/work/vscode/cmake/buildclang/log/CMakeFiles/log.dir
+/d/work/vscode/cmake/buildclang/log/CMakeFiles/edit_cache.dir
+/d/work/vscode/cmake/buildclang/log/CMakeFiles/rebuild_cache.dir
+/d/work/vscode/cmake/buildclang/log/CMakeFiles/list_install_components.dir
+/d/work/vscode/cmake/buildclang/log/CMakeFiles/install.dir
+/d/work/vscode/cmake/buildclang/log/CMakeFiles/install/local.dir
+/d/work/vscode/cmake/buildclang/log/CMakeFiles/install/strip.dir

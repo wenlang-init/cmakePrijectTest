@@ -1,0 +1,8 @@
+{
+	"InstallScripts" : 
+	[
+		"D:/work/vscode/cmake/buildmingw/cmake_install.cmake",
+		"D:/work/vscode/cmake/buildmingw/log/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

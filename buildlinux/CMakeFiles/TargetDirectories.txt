@@ -1,0 +1,14 @@
+/mnt/d/work/vscode/cmake/buildlinux/CMakeFiles/install/strip.dir
+/mnt/d/work/vscode/cmake/buildlinux/CMakeFiles/install/local.dir
+/mnt/d/work/vscode/cmake/buildlinux/CMakeFiles/install.dir
+/mnt/d/work/vscode/cmake/buildlinux/CMakeFiles/list_install_components.dir
+/mnt/d/work/vscode/cmake/buildlinux/CMakeFiles/rebuild_cache.dir
+/mnt/d/work/vscode/cmake/buildlinux/CMakeFiles/edit_cache.dir
+/mnt/d/work/vscode/cmake/buildlinux/CMakeFiles/test.dir
+/mnt/d/work/vscode/cmake/buildlinux/log/CMakeFiles/install/strip.dir
+/mnt/d/work/vscode/cmake/buildlinux/log/CMakeFiles/install/local.dir
+/mnt/d/work/vscode/cmake/buildlinux/log/CMakeFiles/install.dir
+/mnt/d/work/vscode/cmake/buildlinux/log/CMakeFiles/list_install_components.dir
+/mnt/d/work/vscode/cmake/buildlinux/log/CMakeFiles/rebuild_cache.dir
+/mnt/d/work/vscode/cmake/buildlinux/log/CMakeFiles/edit_cache.dir
+/mnt/d/work/vscode/cmake/buildlinux/log/CMakeFiles/log.dir
