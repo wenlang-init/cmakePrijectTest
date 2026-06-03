@@ -7,6 +7,126 @@
 #include "decode/beastSound.h"
 #include "decode/finallyRecovery.h"
 #include "printf/myPrintf.h"
+#include "decode/generatesigal.h"
+
+static int test() {
+     try {
+        // 1. 生成 1 秒、双通道、采样率 48000 Hz、频率 440 Hz、幅度 0.8 的 float 信号
+        auto signalFloat = generateSignal<float>(48000.0, 440.0, 0.8f, 2, 1.0);
+        std::cout << "Float signal size: " << signalFloat.size() << " samples (interleaved)\n";
+        // 打印前 8 个样本（左声道，右声道交替）
+        std::cout << "First 8 samples (L,R): ";
+        for (size_t i = 0; i < 8 && i < signalFloat.size(); ++i) {
+            std::cout << signalFloat[i] << " ";
+        }
+        std::cout << "\n\n";
+
+        // 2. 生成 1 秒、单声道、采样率 16000 Hz、频率 1000 Hz、幅度 0.5 的 int16_t 信号
+        auto signalInt16 = generateSignal<int16_t>(16000.0, 1000.0, 0.5, 1, 1.0);
+        std::cout << "int16_t signal size: " << signalInt16.size() << " samples\n";
+        std::cout << "First 10 samples: ";
+        for (size_t i = 0; i < 10 && i < signalInt16.size(); ++i) {
+            std::cout << signalInt16[i] << " ";
+        }
+        std::cout << std::endl;
+    } catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+        return 1;
+    }
+	
+	try {
+        // 1. 创建生成器：采样率 48000 Hz，频率 440 Hz，幅度 0.8，双通道，float 类型
+        ContinuousSignalGenerator<float> gen(48000.0, 440.0, 0.8f, 2);
+        
+        // 生成前 10 帧（每帧为左右声道，交错方式输出或逐帧查看）
+        std::cout << "First 10 frames (L,R interleaved):" << std::endl;
+        for (int i = 0; i < 10; ++i) {
+            auto frame = gen.nextFrame();  // 返回 vector<float>，大小为2
+            std::cout << "Frame " << i << ": L=" << frame[0] << ", R=" << frame[1] << std::endl;
+        }
+        
+        // 或者直接生成一个交错块（一次性获取 100 个样本 = 50 帧）
+        auto block = gen.generateBlock(100);
+        std::cout << "\nBlock size: " << block.size() << " samples (interleaved)" << std::endl;
+        
+        // 2. 使用 int16_t 类型，单声道，幅度 0.5（归一化）
+        ContinuousSignalGenerator<int16_t> genInt16(16000.0, 1000.0, 0.5, 1);
+        std::cout << "\nint16_t samples (mono):" << std::endl;
+        for (int i = 0; i < 8; ++i) {
+            std::cout << genInt16.nextSample() << " ";
+        }
+        std::cout << std::endl;
+        
+        // 3. 演示频率变化（连续相位）
+        ContinuousSignalGenerator<double> genVar(44100.0, 440.0, 0.5, 1);
+        std::cout << "\nFrequency sweep (phase continuous):" << std::endl;
+        for (int i = 0; i < 100; ++i) {
+            if (i == 50) {
+                genVar.setFrequency(880.0);  // 中途改变频率
+                std::cout << "\nFrequency changed to 880 Hz at sample 50" << std::endl;
+            }
+            // 仅打印部分样本
+            if (i % 20 == 0) {
+                std::cout << genVar.nextSample() << " ";
+            } else {
+                genVar.nextSample(); // 消耗样本
+            }
+        }
+        std::cout << std::endl;
+        
+    } catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+        return 1;
+    }
+
+	try {
+        // 1. 生成双通道正弦波（float）
+        WaveformGenerator<float> sineGen(48000.0, 440.0, 0.8f, 2, WaveformType::Sine);
+        std::cout << "Sine wave, first 5 frames:\n";
+        for (int i = 0; i < 5; ++i) {
+            auto frame = sineGen.nextFrame();
+            std::cout << "Frame " << i << ": L=" << frame[0] << ", R=" << frame[1] << std::endl;
+        }
+        
+        // 2. 生成单声道方波（int16_t）
+        WaveformGenerator<int16_t> squareGen(16000.0, 1000.0, 0.5, 1, WaveformType::Square);
+        std::cout << "\nSquare wave (int16_t), first 8 samples:\n";
+        for (int i = 0; i < 8; ++i) {
+            std::cout << squareGen.nextSample() << " ";
+        }
+        std::cout << std::endl;
+        
+        // 3. 生成三角波并动态改变频率
+        WaveformGenerator<double> triGen(44100.0, 200.0, 0.6, 1, WaveformType::Triangle);
+        std::cout << "\nTriangle wave, frequency sweep (phase continuous):\n";
+        for (int i = 0; i < 100; ++i) {
+            if (i == 50) {
+                triGen.setFrequency(400.0);
+                std::cout << "\nFrequency changed to 400 Hz at sample 50\n";
+            }
+            if (i % 25 == 0) {
+                std::cout << triGen.nextSample() << " ";
+            } else {
+                triGen.nextSample();
+            }
+        }
+        std::cout << std::endl;
+        
+        // 4. 生成白噪声（双声道，浮点）
+        WaveformGenerator<float> noiseGen(48000.0, 0.0, 0.3, 2, WaveformType::Noise);
+        std::cout << "\nWhite noise, first 8 samples (interleaved L,R):\n";
+        auto noiseBlock = noiseGen.generateBlock(16);  // 16个样本 = 8帧
+        for (size_t i = 0; i < noiseBlock.size(); ++i) {
+            std::cout << noiseBlock[i] << (i % 2 == 1 ? "\n" : " ");
+        }
+        
+    } catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+        return 1;
+    }
+	
+    return 0;
+}
 
 void ExitRoutine1(void) {
     INFO_LOG_CXX("while exit\n");
@@ -143,6 +263,10 @@ int main()
 			close_sqlite3_db(db);
 		}
 	}
+
+	INFO_LOG_CXX("generateSignal\n");
+
+	test();
 
     INFO_LOG_CXX("stop\n");
 
